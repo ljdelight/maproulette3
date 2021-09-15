@@ -49,12 +49,57 @@ export const defaultDashboardSetup = function () {
   };
 };
 
+const onClickSingle = () => {
+  const payload = {
+    id: -1,
+    parent: 3679,
+    name: "986527279945353057213422541234",
+    geometries: {
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: [
+              [-110.9853284, 29.1030518],
+              [-110.9848107, 29.1031104],
+            ],
+          },
+          properties: {
+            atlasIdentifier: "83891326000070",
+            confidence: "3775.4499662215862",
+            highwayTag: "TERTIARY",
+            isPostprocessed: "0.0",
+            maxCountRatio: "0.9999602606898744",
+            predictedDirection: "TWO_WAY_TO_ONE_WAY_SAME_DIRECTION",
+            predictionBasis: "PROBE",
+            predictionScore: "1.0",
+            totalTraceCount: "25164",
+            zahlIdentifier: "756842252812164411",
+          },
+        },
+      ],
+    },
+  };
+
+  return new Endpoint(api.task.create, {
+    json: payload,
+  })
+    .execute()
+    .then((normalizedResults) => {
+      debugger;
+    })
+    .catch((error) => {
+      debugger;
+    });
+};
+
 const onClick = () => {
   const payload = [
     {
       id: -1,
-      parent: 3676,
-      name: "986527279945353057",
+      parent: 3679,
+      name: "9865272799453530572131234",
       geometries: {
         features: [
           {
@@ -84,8 +129,8 @@ const onClick = () => {
     },
     {
       id: -1,
-      parent: 3676,
-      name: "991030879501420943",
+      parent: 3679,
+      name: "9910308795014209431231234",
       geometries: {
         features: [
           {
@@ -115,8 +160,8 @@ const onClick = () => {
     },
     {
       id: -1,
-      parent: 3676,
-      name: "986527279945353319",
+      parent: 3679,
+      name: "9865272799453533193451234",
       geometries: {
         features: [
           {
@@ -176,7 +221,7 @@ export class ProjectsDashboard extends Component {
             </li>
           </ul>
         </nav>
-        <button onClick={onClick} style={{ marginBottom: 10 }}>
+        <button onClick={onClickSingle} style={{ marginBottom: 10 }}>
           hello
         </button>
         <div className="admin__manage__controls mr-flex">
