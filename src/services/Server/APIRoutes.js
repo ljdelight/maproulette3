@@ -53,6 +53,7 @@ const apiRoutes = (factory) => {
       latestActivity: factory.get("/data/status/latestActivity"),
       withReviewTasks: factory.get("/review/challenges"),
       tagMetrics: factory.get("/data/tag/metrics"),
+      bulkArchive: factory.post("/challenges/bulkArchive"),
     },
     challenge: {
       single: factory.get("/challenge/:id"),
@@ -75,6 +76,8 @@ const apiRoutes = (factory) => {
       actions: factory.get("/data/challenge/:id"),
       activity: factory.get("/data/challenge/:id/activity"),
       comments: factory.get("/challenge/:id/comments"),
+      challengeComments: factory.get("/challenge/:id/challengeComments"),
+      addComment: factory.post("/challenge/:id/comment"),
       create: factory.post("/challenge"),
       edit: factory.put("/challenge/:id"),
       move: factory.post("/challenge/:challengeId/project/:projectId"),
@@ -87,6 +90,7 @@ const apiRoutes = (factory) => {
       recordSnapshot: factory.get("/snapshot/challenge/:id/record"),
       removeSnapshot: factory.delete("/snapshot/:id"),
       snapshot: factory.get("/snapshot/:id"),
+      archive: factory.post("/challenge/:id/archive"),
     },
     virtualChallenge: {
       single: factory.get("/virtualchallenge/:id"),

@@ -162,6 +162,7 @@ export const receiveChallenges = function (
       c.dataOriginDate = format(parse(c.dataOriginDate), "YYYY-MM-DD");
     }
   });
+
   return {
     type: RECEIVE_CHALLENGES,
     status,
@@ -309,6 +310,7 @@ export const performChallengeSearch = function (
   limit = RESULTS_PER_PAGE
 ) {
   const sortCriteria = _get(searchObject, "sort", {});
+  const archived = _get(searchObject, "archived", false);
   const filters = _get(searchObject, "filters", {});
   const queryString = _get(searchObject, "query");
   const page = _get(searchObject, "page.currentPage");
@@ -333,6 +335,7 @@ export const performChallengeSearch = function (
       bounds,
       page,
       challengeStatus,
+      archived
     },
     limit
   );
@@ -394,6 +397,10 @@ export const extendedFind = function (criteria, limit = RESULTS_PER_PAGE) {
 
     if (_isString(filters.challengeId)) {
       queryParams.cid = filters.challengeId;
+    }
+
+    if (filters.archived) {
+      queryParams.ca = filters.archived;
     }
 
     // Keywords/tags can come from both the the query and the filter, so we need to
@@ -875,6 +882,13 @@ export const saveChallenge = function (
   return function (dispatch) {
     // The server wants keywords/tags represented as a comma-separated string.
     let challengeData = _clone(originalChallengeData);
+
+    if (process.env.REACT_APP_CHANGESET_URL === "enabled") {
+      if (challengeData.changesetUrl === undefined) {
+        challengeData.changesetUrl = true;
+      }
+    }
+
     if (_isArray(challengeData.tags)) {
       challengeData.tags = challengeData.tags.join(",");
     }
@@ -884,9 +898,8 @@ export const saveChallenge = function (
     }
 
     if (_isArray(challengeData.preferredReviewTags)) {
-      challengeData.preferredReviewTags = challengeData.preferredReviewTags.join(
-        ","
-      );
+      challengeData.preferredReviewTags =
+        challengeData.preferredReviewTags.join(",");
     }
 
     // If there is local GeoJSON content being transmitted as a string, parse
@@ -909,6 +922,7 @@ export const saveChallenge = function (
         [
           "blurb",
           "challengeType",
+          "changesetUrl",
           "checkinComment",
           "checkinSource",
           "customBasemap",
@@ -1152,12 +1166,18 @@ export const deleteChallenge = function (challengeId) {
 };
 
 /**
- * archives the given challenge.
+ * updates the archive status of the given challenge.
  */
 export const archiveChallenge = function (challengeId, bool) {
   return function (dispatch) {
+    // calling archive is necessary to nullify the system_archived_at field
+    new Endpoint(api.challenge.archive, {
+      variables: { id: challengeId },
+      json: { isArchived: bool },
+    }).execute();
+
+    // calling 'edit' in addition to 'archive' is necessary to override the cache mechanism in the BE.
     return new Endpoint(api.challenge.edit, {
-      schema: challengeSchema(),
       variables: { id: challengeId },
       json: { isArchived: bool },
     })
@@ -1175,6 +1195,28 @@ export const archiveChallenge = function (challengeId, bool) {
           );
         } else {
           dispatch(addError(AppErrors.challenge.archiveChallenge));
+          console.log(error.response || error);
+        }
+      });
+  };
+};
+
+export const archiveChallenges = function (projectId, challengeIds, bool) {
+  return function (dispatch) {
+    return new Endpoint(api.challenges.bulkArchive, {
+      json: { isArchived: bool, ids: challengeIds },
+    })
+      .execute()
+      .then(() => {
+        return true;
+      })
+      .catch((error) => {
+        if (isSecurityError(error)) {
+          dispatch(ensureUserLoggedIn()).then(() =>
+            dispatch(addError(AppErrors.user.unauthorized))
+          );
+        } else {
+          dispatch(addError(AppErrors.challenge.archiveFailure));
           console.log(error.response || error);
         }
       });

@@ -7,6 +7,62 @@ The format is based on
 This project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v3.7.11] - 2021-09-14
+
+### Added
+- Scheduler for Archiving Stale Challenges (API)
+- Add Archived Filter Toggle to Challenge Discoverability
+- Add capability to bulk archive challenges on Project Management page
+- Add capability to sort by challenge completion
+- Changeset URL now defaults to true; verbiage change
+- Add variable cap to the number of tasks allowed in a challenge.
+
+### Fixed
+- Fix missing Review Duration values for CSV exports (API)
+- Fix link in inbox notifications for challenge comments
+
+## [v3.7.10] - 2021-08-03
+
+### Fixed
+- Expose 403 lock errors to the user error modals
+- Distinguish page from offset in challenge /children search (API).
+
+## [v3.7.9] - 2021-07-13
+
+### Added
+- Challenge comments
+- Review and Revision Count Notifications
+
+### Fixed
+- Upgrade react-syntax-highlighter dependency
+
+## [v3.7.8-rev2] - 2021-06-22
+
+### Fixed
+- Fixed issue where changesetUrl is required (API).
+- Add OSM editor button to coop tasks.
+- Distinguish page from offset in challenge search (API).
+
+## [v3.7.8rev1] - 2021-06-09
+
+### Fixed
+- Unable to upload tasks (API). [(895)](https://github.com/maproulette/maproulette2/issues/895)
+- Unable to do batch status changes [(1613)](https://github.com/osmlab/maproulette3/issues/1613)
+- Instruction Widget expand/collapse toggle fix.
+
+## [v3.7.8] - 2021-06-02
+
+### Added
+
+- Ability to prebundle tasks by a task property before creating a challenge
+- Ability to archive projects and challenges
+- Polish language support
+- Ability to add the challenge URL to task changeset comment
+
+### Changed
+
+- Challenge authors will now be required to provide an email address
+
 ## [v3.7.7] - 2021-04-07
 ### Added
 - Ability to see and add comments in the Task Bundle widget

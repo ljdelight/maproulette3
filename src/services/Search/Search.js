@@ -50,9 +50,11 @@ export const SORT_NAME = 'name'
 export const SORT_CREATED = 'created'
 export const SORT_OLDEST = 'Created'
 export const SORT_POPULARITY = 'popularity'
+export const SORT_COMPLETION = 'completion_percentage'
+export const SORT_TASKS_REMAINING = 'tasks_remaining'
 export const SORT_COOPERATIVE_WORK = 'cooperative_type'
 export const SORT_DEFAULT = 'default'
-export const ALL_SORT_OPTIONS = [SORT_NAME, SORT_CREATED, SORT_OLDEST, SORT_POPULARITY, SORT_COOPERATIVE_WORK, SORT_DEFAULT]
+export const ALL_SORT_OPTIONS = [SORT_NAME, SORT_CREATED, SORT_OLDEST, SORT_POPULARITY, SORT_COOPERATIVE_WORK, SORT_COMPLETION, SORT_TASKS_REMAINING, SORT_DEFAULT]
 
 // Default Results Per page
 export const RESULTS_PER_PAGE = 50
@@ -63,6 +65,8 @@ export const SortOptions = {
   created_oldest: SORT_OLDEST,
   popular: SORT_POPULARITY,
   cooperativeWork: SORT_COOPERATIVE_WORK,
+  completion_percentage: SORT_COMPLETION,
+  tasks_remaining: SORT_TASKS_REMAINING,
   default: SORT_DEFAULT,
 }
 
@@ -85,6 +89,7 @@ export const PARAMS_MAP = {
   difficulty: 'cd',
   tags: 'tt',
   excludeTasks: 'tExcl',
+  archived: "ca"
 }
 
 
@@ -144,6 +149,9 @@ export const generateSearchParametersString = (filters, boundingBox, savedChalle
   const searchParameters = {}
   const invf = []
 
+  if (filters.archived) {
+    searchParameters[PARAMS_MAP.archived] = filters.archived;
+  }
   if (filters.reviewRequestedBy) {
     searchParameters[PARAMS_MAP.reviewRequestedBy] = filters.reviewRequestedBy
     if (invertFields.reviewRequestedBy) {
