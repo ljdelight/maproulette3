@@ -28,6 +28,8 @@ import ChallengeNameLink from "../../../ChallengeNameLink/ChallengeNameLink";
 import ShareLink from "../../../ShareLink/ShareLink";
 import manageMessages from "../Messages";
 import "./ChallengeDashboard.scss";
+import Endpoint from "../../../../services/Server/Endpoint";
+import { defaultRoutes as api } from "../../../../services/Server/Server";
 
 // The name of this dashboard.
 const DASHBOARD_NAME = "challenge";
@@ -62,6 +64,53 @@ export const defaultDashboardSetup = function () {
       { i: generateWidgetId(), x: 4, y: 0, w: 8, h: 49 },
     ],
   };
+};
+
+const onClick = (id) => {
+  const payload = [
+    {
+      id: -1,
+      parent: id,
+      name: "986527279945353057",
+      geometries: {
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: [
+                [-110.9853284, 29.1030518],
+                [-110.9848107, 29.1031104],
+              ],
+            },
+            properties: {
+              atlasIdentifier: "83891326000070",
+              confidence: "3775.4499662215862",
+              highwayTag: "TERTIARY",
+              isPostprocessed: "0.0",
+              maxCountRatio: "0.9999602606898744",
+              predictedDirection: "TWO_WAY_TO_ONE_WAY_SAME_DIRECTION",
+              predictionBasis: "PROBE",
+              predictionScore: "1.0",
+              totalTraceCount: "25164",
+              zahlIdentifier: "756842252812164411",
+            },
+          },
+        ],
+      },
+    }
+  ];
+
+  return new Endpoint(api.tasks.batchUpload, {
+    json: payload,
+  })
+    .execute()
+    .then((normalizedResults) => {
+      debugger;
+    })
+    .catch((error) => {
+      debugger;
+    });
 };
 
 /**
@@ -99,6 +148,7 @@ export class ChallengeDashboard extends Component {
 
     const pageHeader = (
       <div className="admin__manage__header admin__manage__header--flush">
+      <div onClick={() => onClick(this.props.challenge.id)}>hello</div>
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
             <li className="nav-title">

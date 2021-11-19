@@ -42,6 +42,7 @@ export default class Endpoint {
    *          if a normalization schema was provided) or rejects on error.
    */
   execute = () => {
+    console.log(this.route)
     switch(this.route.method) {
       case 'POST':
       case 'PUT':

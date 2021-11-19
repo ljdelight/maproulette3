@@ -126,6 +126,7 @@ const apiRoutes = (factory) => {
         ),
       },
       removeReviewRequest: factory.put("/tasks/review/remove"),
+      batchUpload: factory.post("/tasks"),
     },
     task: {
       single: factory.get("/task/:id"),
