@@ -30,15 +30,20 @@ export class SignInButton extends Component {
       )
     }
 
+    const { pathname, search } = this.props.history.location;
+    const href = `${process.env.REACT_APP_SERVER_OAUTH_URL}${encodeURIComponent(
+      pathname + search
+    )}`
+
+    if (process.env.NODE_ENV === "production" && !window.location.href.includes("staging")) {
+      href.replace("redirect=", "redirect=http://maproulette.org")
+    }
+
     return (
       <a
         className={classNames("mr-button", this.props.className)}
         onClick={() => this.setState({clicked: true})}
-        href={
-          `${process.env.REACT_APP_SERVER_OAUTH_URL}${encodeURIComponent(
-            this.props.history.location.pathname + this.props.history.location.search
-          )}`.replace("www.", "").replace("https", "http")
-        }
+        href={href}
       >
         {this.props.children || (
          this.props.longForm ?
